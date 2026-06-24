@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ACROZELA LEAD MANAGEMENT SYSTEM - Professional Tool Builder for Business Lead Tracking with Indian Currency and Excel Export.">
+    <meta name="keywords" content="ACROZELA, Lead Management, CRM, India Business, Excel Lead Tracker">
+    <title>ACROZELA LEAD MANAGEMENT SYSTEM</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-blue: #0061f2;
+            --soft-blue: #e0e9f5;
+            --lite-bg: #f8fbff;
+            --card-white: #ffffff;
+            --border-color: #dbe7f5;
+            --text-dark: #1a2b4b;
+            --text-gray: #69707a;
+            --success: #00ac69;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--lite-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background: var(--card-white);
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid var(--primary-blue);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+        }
+
+        header h1 {
+            font-weight: 800;
+            font-size: 1.4rem;
+            color: var(--primary-blue);
+            letter-spacing: 1px;
+        }
+
+        /* MAIN LAYOUT */
+        main {
+            flex: 1;
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* DASHBOARD STATS (Starts at 0) */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-white);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 0.8rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-card p {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* LEAD FORM */
+        .form-section {
+            background: var(--card-white);
+            padding: 2rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 2rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+            color: var(--text-gray);
+        }
+
+        input, select, textarea {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            outline: none;
+            font-size: 0.9rem;
+            background: #fafcfe;
+        }
+
+        input:focus { border-color: var(--primary-blue); background: #fff; }
+
+        .btn-row {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.2s;
+        }
+
+        .btn-add { background: var(--primary-blue); color: white; }
+        .btn-export { background: var(--success); color: white; }
+        button:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        /* DATA TABLE */
+        .table-container {
+            background: var(--card-white);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background: #f0f5ff;
+            padding: 1rem;
+            text-align: left;
+            color: var(--text-gray);
+            font-weight: 600;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .delete-link { color: #e81500; cursor: pointer; font-weight: 600; }
+
+        .empty-state {
+            padding: 4rem;
+            text-align: center;
+            color: var(--text-gray);
+            font-style: italic;
+        }
+
+        /* FOOTER */
+        footer {
+            background: var(--card-white);
+            text-align: center;
+            padding: 2.5rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        footer p {
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-dark);
+            margin: 0.2rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.1rem; }
+            main { padding: 1rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ACROZELA LEAD MANAGEMENT SYSTEM</h1>
+    </header>
+
+    <main>
+        <!-- Real-time Stats -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <h3>Total Leads</h3>
+                <p id="totalLeads">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Pipeline Value</h3>
+                <p id="totalValue">₹ 0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Source Count</h3>
+                <p id="sourceCount">0</p>
+            </div>
+        </div>
+
+        <!-- Add Lead Form -->
+        <section class="form-section">
+            <form id="leadForm">
+                <div class="form-grid">
+                    <div class="input-group">
+                        <label>CLIENT NAME</label>
+                        <input type="text" id="name" required placeholder="Full Name">
+                    </div>
+                    <div class="input-group">
+                        <label>PHONE NUMBER</label>
+                        <input type="tel" id="phone" required placeholder="+91 00000 00000">
+                    </div>
+                    <div class="input-group">
+                        <label>EMAIL ID</label>
+                        <input type="email" id="email" required placeholder="name@company.com">
+                    </div>
+                    <div class="input-group">
+                        <label>BUSINESS TYPE</label>
+                        <input type="text" id="business" required placeholder="e.g. Retail, Tech, Manufacturing">
+                    </div>
+                    <div class="input-group">
+                        <label>SOURCE PLATFORM</label>
+                        <select id="source">
+                            <option value="Google">Google Search</option>
+                            <option value="LinkedIn">LinkedIn</option>
+                            <option value="Instagram">Instagram</option>
+                            <option value="Referral">Direct Referral</option>
+                            <option value="Other">Other Platform</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>DEAL VALUE (₹)</label>
+                        <input type="number" id="amount" required placeholder="0.00">
+                    </div>
+                    <div class="input-group">
+                        <label>ADDRESS</label>
+                        <input type="text" id="address" required placeholder="City, State, India">
+                    </div>
+                    <div class="input-group">
+                        <label>LEAD STATUS</label>
+                        <select id="status">
+                            <option value="New">New</option>
+                            <option value="Contacted">Contacted</option>
+                            <option value="Converted">Converted</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-row">
+                    <button type="submit" class="btn-add">SAVE NEW LEAD</button>
+                    <button type="button" class="btn-export" onclick="exportToExcel()">EXPORT TO EXCEL (.CSV)</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Lead Table -->
+        <div class="table-container">
+            <table id="leadsTable">
+                <thead>
+                    <tr>
+                        <th>CLIENT</th>
+                        <th>BUSINESS</th>
+                        <th>CONTACT</th>
+                        <th>SOURCE</th>
+                        <th>VALUE (INR)</th>
+                        <th>STATUS</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+            <div id="emptyMsg" class="empty-state">No business leads found. Enter details above to populate your dashboard.</div>
+        </div>
+    </main>
+
+    <footer>
+        <p>ACROZELA LEAD MANAGEMENT SYSTEM</p>
+        <p>DEVELOPED BY ACROZELA TECH</p>
+    </footer>
+
+    <script>
+        // Data Handling
+        let leads = JSON.parse(localStorage.getItem('acrozela_pro_leads')) || [];
+
+        const leadForm = document.getElementById('leadForm');
+        const tableBody = document.getElementById('tableBody');
+        const emptyMsg = document.getElementById('emptyMsg');
+
+        // Stats elements
+        const totalLeadsEl = document.getElementById('totalLeads');
+        const totalValueEl = document.getElementById('totalValue');
+        const sourceCountEl = document.getElementById('sourceCount');
+
+        // Initial Load
+        function init() {
+            renderLeads();
+            updateStats();
+        }
+
+        // Add Lead
+        leadForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const newLead = {
+                id: Date.now(),
+                name: document.getElementById('name').value.toUpperCase(),
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                business: document.getElementById('business').value.toUpperCase(),
+                source: document.getElementById('source').value,
+                amount: parseFloat(document.getElementById('amount').value),
+                address: document.getElementById('address').value,
+                status: document.getElementById('status').value
+            };
+
+            leads.push(newLead);
+            saveData();
+            leadForm.reset();
+        });
+
+        // Delete Lead
+        function deleteLead(id) {
+            leads = leads.filter(l => l.id !== id);
+            saveData();
+        }
+
+        // Save and Sync
+        function saveData() {
+            localStorage.setItem('acrozela_pro_leads', JSON.stringify(leads));
+            renderLeads();
+            updateStats();
+        }
+
+        // Render UI
+        function renderLeads() {
+            tableBody.innerHTML = '';
+            if (leads.length === 0) {
+                emptyMsg.style.display = 'block';
+            } else {
+                emptyMsg.style.display = 'none';
+                leads.forEach(lead => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td><strong>${lead.name}</strong><br><small>${lead.address}</small></td>
+                        <td>${lead.business}</td>
+                        <td>${lead.phone}<br><small>${lead.email}</small></td>
+                        <td>${lead.source}</td>
+                        <td style="font-weight:700">₹ ${lead.amount.toLocaleString('en-IN')}</td>
+                        <td><span class="status-badge" style="background:${getStatusColor(lead.status)}; color:white">${lead.status}</span></td>
+                        <td><span class="delete-link" onclick="deleteLead(${lead.id})">REMOVE</span></td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        function getStatusColor(status) {
+            if(status === 'New') return '#0061f2';
+            if(status === 'Contacted') return '#f4a100';
+            return '#00ac69';
+        }
+
+        function updateStats() {
+            const total = leads.length;
+            const value = leads.reduce((acc, curr) => acc + curr.amount, 0);
+            const uniqueSources = [...new Set(leads.map(l => l.source))].length;
+
+            totalLeadsEl.innerText = total;
+            totalValueEl.innerText = `₹ ${value.toLocaleString('en-IN')}`;
+            sourceCountEl.innerText = uniqueSources;
+        }
+
+        // Excel Export Function (CSV Format)
+        function exportToExcel() {
+            if (leads.length === 0) {
+                alert("No data available to export.");
+                return;
+            }
+
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Client Name,Phone,Email,Business,Source,Amount(INR),Address,Status\r\n";
+
+            leads.forEach(l => {
+                let row = `${l.name},${l.phone},${l.email},${l.business},${l.source},${l.amount},${l.address},${l.status}`;
+                csvContent += row + "\r\n";
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "ACROZELA_LEAD_DATA.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        init();
+    </script>
+</body>
+</html>
